@@ -1,6 +1,6 @@
 {
   "name": "mod-col",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Model&Collection library for frontend. Break entities on your frontend into reusable parts!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
