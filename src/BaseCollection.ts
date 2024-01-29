@@ -1,4 +1,4 @@
-import BaseModel from './BaseClass';
+import BaseModel from './BaseModel';
 import MetaClass from './MetaClass';
 import { isPlainObject } from 'lodash';
 

@@ -8,13 +8,14 @@
     "/dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "build": "tsc",
     "publish-lib": "npm run build && npm publish"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
-    "vite": "^5.0.8"
+    "vite": "^5.0.8",
+    "vitest": "^1.2.2"
   },
   "dependencies": {
     "@types/node": "^20.11.10"

@@ -13,7 +13,7 @@ export default class BaseModel extends MetaClass {
   isReactiveValidation: boolean = false;
   initialFields: string[] = [];
   boot: Function | undefined | null = null;
-  [key: string]: any,
+  [key: string]: any;
 
   constructor(data = null) {
     super();
