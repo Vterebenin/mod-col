@@ -1,14 +1,22 @@
 {
   "name": "mod-col",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Model&Collection library for frontend. Break entities on your frontend into reusable parts!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "/dist"
   ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "publish-lib": "npm run build && npm publish"
+  },
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "@types/node": "^20.11.10"
   }
 }
