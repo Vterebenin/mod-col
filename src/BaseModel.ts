@@ -1,18 +1,18 @@
 import { get, uniqueId } from 'lodash';
 import MetaClass from './MetaClass';
 import { AbstractObject, Endpoint } from './types';
+import { RESERVED_FIELDS } from './const';
 
 export const EVENTS_TYPES = {
   AFTER_FETCH: 'fetch, after',
 };
 
-const RESERVED_FIELDS = ['loading', '_uid', '_listeners'];
-
 export default class BaseModel extends MetaClass {
-  errors: AbstractObject<String> = {};
-  isReactiveValidation: boolean = false;
+  public errors: AbstractObject<String> = {};
+  public boot: Function | undefined | null = null;
+
   initialFields: string[] = [];
-  boot: Function | undefined | null = null;
+
   [key: string]: any;
 
   constructor(data = null) {
@@ -32,17 +32,18 @@ export default class BaseModel extends MetaClass {
     });
   }
 
-  clear(data = null) {
+  public clear(data = null) {
     this.set(data || this.defaultState());
   }
 
-  reset(data = null) {
+  public reset(data = null) {
     const keys = Object.keys(this);
     for (const key of keys) {
       if (!this.initialFields.includes(key)) {
         delete this[key];
       }
     }
+    this.clearErrors();
     this.updateMeta();
     this.clear(data);
     if (this.boot) {
@@ -50,7 +51,7 @@ export default class BaseModel extends MetaClass {
     }
   }
 
-  get isValid() {
+  public get isValid() {
     if (!Object.keys(this.errors).length) {
       return true;
     }
@@ -64,21 +65,21 @@ export default class BaseModel extends MetaClass {
     return true;
   }
 
-  defaultState() {
+  public defaultState() {
     return {};
   }
 
-  clearState() {
+  public clearState() {
     this.loading = false;
     this.errors = {};
     this.set(this.defaultState());
   }
 
-  get(prop: string, defaultValue: any) {
+  public get(prop: string, defaultValue: any) {
     return get(this, prop, defaultValue);
   }
 
-  set(data: AbstractObject<any>) {
+  public set(data: AbstractObject<any>) {
     if (!data) {
       this.clear();
       return this;
@@ -89,7 +90,7 @@ export default class BaseModel extends MetaClass {
     return this;
   }
 
-  async doWithLoading(func: Function, ...args: any[]) {
+  public async doWithLoading(func: Function, ...args: any[]) {
     this.loading = true;
     let response;
     try {
@@ -102,7 +103,7 @@ export default class BaseModel extends MetaClass {
     return response;
   }
 
-  async validateAndMakeRequest(payload: any, context: any, requestFunc: Endpoint): Promise<any> {
+  public async validateAndMakeRequest(payload: any, context: any, requestFunc: Endpoint): Promise<any> {
     let response;
     const valid = this.validate(context);
     if (!valid) return;
@@ -119,27 +120,27 @@ export default class BaseModel extends MetaClass {
     return response;
   }
 
-  validateAndFetch(payload: any, context: any): Promise<any> {
+  public validateAndFetch(payload: any, context: any): Promise<any> {
     return this.validateAndMakeRequest(payload, context, this.fetch);
   }
 
-  validateAndCreate(payload: any, context: any): Promise<any> {
+  public validateAndCreate(payload: any, context: any): Promise<any> {
     return this.validateAndMakeRequest(payload, context, this.create);
   }
 
-  validateAndRead(payload: any, context: any): Promise<any> {
+  public validateAndRead(payload: any, context: any): Promise<any> {
     return this.validateAndMakeRequest(payload, context, this.read);
   }
 
-  validateAndUpdate(payload: any, context: any): Promise<any> {
+  public validateAndUpdate(payload: any, context: any): Promise<any> {
     return this.validateAndMakeRequest(payload, context, this.update);
   }
 
-  validateAndDelete(payload: any, context: any): Promise<any> {
+  public validateAndDelete(payload: any, context: any): Promise<any> {
     return this.validateAndMakeRequest(payload, context, this.delete);
   }
 
-  async fetch(payload: any): Promise<any> {
+  public async fetch(payload: any): Promise<any> {
     const response = await super.fetch(payload);
     this.set(response.data);
     this.emit(EVENTS_TYPES.AFTER_FETCH, response);
@@ -149,11 +150,11 @@ export default class BaseModel extends MetaClass {
   // Validation object is an object that should be written in such way:
   // todo: make docs
   // mapper of validation functions and messages
-  validation(_context: any | null): AbstractObject<() => string> {
+  public validation(_context: any | null): AbstractObject<() => string> {
     return {};
   }
 
-  validate(context = null) {
+  public validate(context = null) {
     this.errors = {};
     const validation = this.validation(context);
 
@@ -172,14 +173,15 @@ export default class BaseModel extends MetaClass {
     return result;
   }
 
-  clearError(errorId: string) {
+  public clearError(errorId: string) {
     if (!this.errors[errorId]) return;
 
     this.errors[errorId] = '';
   }
 
-  clearErrors(errorIds: string[]) {
-    errorIds.forEach(errorId => {
+  public clearErrors(errorIds: string[] = []) {
+    const errors = errorIds.length ? errorIds : Object.keys(this.errors);
+    errors.forEach(errorId => {
       this.errors[errorId] = '';
     });
   }

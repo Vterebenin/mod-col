@@ -4,6 +4,7 @@
   "description": "Model&Collection library for frontend. Break entities on your frontend into reusable parts!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "files": [
     "/dist"
   ],
@@ -18,6 +19,7 @@
     "vitest": "^1.2.2"
   },
   "dependencies": {
-    "@types/node": "^20.11.10"
+    "@types/node": "^20.11.10",
+    "lodash": "^4.17.21"
   }
 }

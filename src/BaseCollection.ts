@@ -1,6 +1,6 @@
+import { isPlainObject } from 'lodash';
 import BaseModel from './BaseModel';
 import MetaClass from './MetaClass';
-import { isPlainObject } from 'lodash';
 
 // BaseCollection is basically a wrapper around array of Models
 export default class BaseCollection<T extends BaseModel> extends MetaClass {
