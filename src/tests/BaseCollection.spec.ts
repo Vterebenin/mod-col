@@ -25,26 +25,32 @@ describe('BaseCollection', () => {
   });
 
   test('add method adds a model or item to the collection', () => {
-    const model = {/* mock model */ };
+    const model = {};
     collection.add(model);
     expect(collection.models.length).toBe(1);
     expect(collection.models[0]).toBeInstanceOf(BaseModel);
   });
 
   test('dropModels method clears models array', () => {
-    collection.models = [/* some mock models */];
+    collection.models = [new BaseModel(), new BaseModel()];
     collection.dropModels();
     expect(collection.models).toHaveLength(0);
   });
 
-  test('set method replaces models with new data', () => {
+  test('set method replaces models with new data (empty)', () => {
     const newData: never[] = [];
     collection.set(newData);
     expect(collection.models).toEqual(newData);
   });
 
+  test('set method replaces models with new data (some)', () => {
+    const newData: BaseModel[] = [new BaseModel(), new BaseModel()];
+    collection.set(newData);
+    expect(collection.models).toEqual(newData);
+  });
+
   test('remove method removes the specified model from the collection', () => {
-    const mockModel = {/* mock model */ };
+    const mockModel = {};
     collection.add(mockModel);
     expect(collection.models).toHaveLength(1);
     const modelToRemove = collection.models[0];
@@ -61,8 +67,32 @@ describe('BaseCollection', () => {
     expect(collection.models[0].newField).toBe(newModel.newField);
   });
 
+  test('override method does nothing if not found', () => {
+    collection.add({});
+    const newModel = collection.models[0].clone();
+    const prev_uid = newModel._uid;
+    newModel._uid = 'some other uid';
+    collection.override(newModel);
+    expect(collection.models[0]._uid).toBe(prev_uid);
+  });
+
   test('get method returns the models array', () => {
     expect(collection.get()).toEqual([]);
+  });
+  test('createModel returns undefined if ModelConstructor is not defined', () => {
+    collection.model = vi.fn().mockReturnValue(null);
+
+    const result = collection.createModel({});
+
+    expect(result).toBeUndefined(); // Should return undefined when ModelConstructor is not defined
+  });
+
+  test('createModel returns instance of ModelConstructor when ModelConstructor is defined', () => {
+    collection.model = vi.fn().mockReturnValue(BaseModel);
+
+    const result = collection.createModel({});
+
+    expect(result).toBeInstanceOf(BaseModel); // Should return an instance of TestModel when ModelConstructor is defined
   });
 });
 

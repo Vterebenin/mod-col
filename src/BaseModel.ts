@@ -10,7 +10,6 @@ export const EVENTS_TYPES = {
 export default class BaseModel extends MetaClass {
   public errors: AbstractObject<String> = {};
   public boot: Function | undefined | null = null;
-  public _uid: string;
 
   initialFields: string[] = [];
 
@@ -18,6 +17,10 @@ export default class BaseModel extends MetaClass {
 
   constructor(data: any = null) {
     super();
+    return this.initialize(data);
+  }
+
+  initialize(data: any): BaseModel {
     this.initialFields = Object.keys(this).filter(k => !RESERVED_FIELDS.includes(k));
     this.clear(data);
     this._uid = uniqueId();
@@ -80,7 +83,7 @@ export default class BaseModel extends MetaClass {
     return get(this, prop, defaultValue);
   }
 
-  public set(data: AbstractObject<any>) {
+  public set(data: AbstractObject<any> | undefined) {
     if (!data) {
       this.clear();
       return this;
@@ -107,8 +110,8 @@ export default class BaseModel extends MetaClass {
   public async validateAndMakeRequest(payload: any, context: any, requestFunc: Endpoint): Promise<any> {
     let response;
     const valid = this.validate(context);
-    if (!valid) return;
-    if (!requestFunc) return;
+    if (!valid) return null;
+    if (!requestFunc) return null;
 
     try {
       response = await requestFunc.call(this, payload);
@@ -143,6 +146,11 @@ export default class BaseModel extends MetaClass {
 
   public async fetch(payload: any): Promise<any> {
     const response = await super.fetch(payload);
+
+    if (response instanceof Error) {
+      return response;
+    }
+
     this.set(response.data);
     this.emit(EVENTS_TYPES.AFTER_FETCH, response);
     return response;
@@ -151,7 +159,7 @@ export default class BaseModel extends MetaClass {
   // Validation object is an object that should be written in such way:
   // todo: make docs
   // mapper of validation functions and messages
-  public validation(_context: any | null): AbstractObject<() => string> {
+  public validation(_context: any = null): AbstractObject<() => string> {
     return {};
   }
 
@@ -189,7 +197,7 @@ export default class BaseModel extends MetaClass {
 
   public clone() {
     const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-    return clone; 
+    return clone;
   }
 }
 
