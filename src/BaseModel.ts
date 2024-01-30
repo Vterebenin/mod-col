@@ -10,12 +10,13 @@ export const EVENTS_TYPES = {
 export default class BaseModel extends MetaClass {
   public errors: AbstractObject<String> = {};
   public boot: Function | undefined | null = null;
+  public _uid: string;
 
   initialFields: string[] = [];
 
   [key: string]: any;
 
-  constructor(data = null) {
+  constructor(data: any = null) {
     super();
     this.initialFields = Object.keys(this).filter(k => !RESERVED_FIELDS.includes(k));
     this.clear(data);
@@ -44,7 +45,7 @@ export default class BaseModel extends MetaClass {
       }
     }
     this.clearErrors();
-    this.updateMeta();
+    this.createMeta();
     this.clear(data);
     if (this.boot) {
       this.boot();
@@ -184,6 +185,11 @@ export default class BaseModel extends MetaClass {
     errors.forEach(errorId => {
       this.errors[errorId] = '';
     });
+  }
+
+  public clone() {
+    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+    return clone; 
   }
 }
 

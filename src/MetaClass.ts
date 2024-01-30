@@ -2,15 +2,15 @@ import { uniqueId } from 'lodash';
 import { Listeners, Endpoints } from './types';
 
 export default class MetaClass {
-  loading: boolean = false;
-  _uid: string = uniqueId();
-  _listeners: Listeners = {};
+  public loading: boolean = false;
+  public _uid: string = uniqueId();
+  public _listeners: Listeners = {};
 
   constructor() {
-    this.updateMeta();
+    this.createMeta();
   }
 
-  updateMeta() {
+  public createMeta() {
     this.loading = false;
     this._uid = uniqueId();
     this._listeners = {};
@@ -19,50 +19,50 @@ export default class MetaClass {
   /**
    * @returns {string} The class name of this instance.
    */
-  get $class(): string {
+  public get $class(): string {
     return (Object.getPrototypeOf(this)).constructor.name;
   }
 
-  toString(): string {
+  public toString(): string {
     return `<${this.$class} #${this._uid}>`;
   }
 
-  fetch(payload = null): Promise<any> {
+  public fetch(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.fetch);
   }
 
-  create(payload = null): Promise<any> {
+  public create(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.create);
   }
 
-  read(payload = null): Promise<any> {
+  public read(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.read);
   }
 
-  update(payload = null): Promise<any> {
+  public update(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.update);
   }
 
-  delete(payload = null): Promise<any> {
+  public delete(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.delete);
   }
 
-  bulkDelete(payload = null): Promise<any> {
+  public bulkDelete(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.bulkDelete);
   }
 
-  bulkCreateOrUpdate(payload = null): Promise<any> {
+  public bulkCreateOrUpdate(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.bulkCreateOrUpdate);
   }
 
-  async makeRequest(payload: any, reqFunc: any): Promise<any> {
+  public async makeRequest(payload: any, reqFunc: any): Promise<any> {
     if (reqFunc) {
       return this.doWithLoading(reqFunc, payload);
     }
     return null;
   }
 
-  async doWithLoading(func: Function, ...args: any[]) {
+  public async doWithLoading(func: Function, ...args: any[]) {
     this.loading = true;
     const result = await func(...args);
     this.loading = false;
@@ -70,7 +70,7 @@ export default class MetaClass {
   }
 
   // mapper of validation functions and messages
-  apiFunctions(): Endpoints {
+  public apiFunctions(): Endpoints {
     return {
       fetch: null,
       create: null,
@@ -90,7 +90,7 @@ export default class MetaClass {
    * @param {string} event    The name of the event to emit.
    * @param {Any} args  The context of the event, passed to listeners.
    */
-  emit(event: any, ...args: any[]): void {
+  public emit(event: any, ...args: any[]): void {
     const listeners = this._listeners[event];
 
     if (!listeners) {
@@ -110,7 +110,7 @@ export default class MetaClass {
    * @param {string}   event      The name of the event to listen for.
    * @param {function} listener   The event listener, accepts context.
    */
-  on(event: string, listener: Function): void {
+  public on(event: string, listener: Function): void {
     if (!this._listeners[event]) {
       this._listeners[event] = [];
     }

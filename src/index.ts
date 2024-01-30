@@ -1,5 +1,5 @@
 import BaseCollection from "./BaseCollection";
-import BaseModel from "./BaseModel";
+import BaseModel, { EVENTS_TYPES } from "./BaseModel";
 import MetaClass from "./MetaClass";
 
-export { BaseModel, BaseCollection, MetaClass };
+export { BaseModel, BaseCollection, MetaClass, EVENTS_TYPES };

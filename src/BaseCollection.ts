@@ -4,8 +4,8 @@ import MetaClass from './MetaClass';
 
 // BaseCollection is basically a wrapper around array of Models
 export default class BaseCollection<T extends BaseModel> extends MetaClass {
-  models: T[];
-  loading: boolean = false;
+  public models: T[];
+  public loading: boolean = false;
 
   constructor(data: any = []) {
     super();
@@ -14,33 +14,33 @@ export default class BaseCollection<T extends BaseModel> extends MetaClass {
     this.add = this.add.bind(this);
   }
 
-  transformModels(data: T[]) {
+  public transformModels(data: T[]) {
     return data;
   }
 
   // redefine this one according to your model of collection
-  model(): T | null | undefined {
-    return null;
+  public model(): T | typeof BaseModel | null | undefined {
+    return BaseModel;
   }
 
-  createModel(attributes: any): T | undefined {
+  public createModel(attributes: any): T | undefined {
     const ModelConstructor = this.model() as unknown as new (attributes: any) => T;
     if (!ModelConstructor) return;
     return new ModelConstructor(attributes);
   }
 
-  dropModels() {
+  public dropModels() {
     this.models.splice(0, this.models.length);
   }
 
-  set(data: any) {
+  public set(data: any) {
     this.dropModels();
     for (const item of data) {
       this.add(item);
     }
   }
 
-  add(item: any) {
+  public add(item: any) {
     if (isPlainObject(item)) {
       this.add(this.createModel(item));
       return;
@@ -48,24 +48,24 @@ export default class BaseCollection<T extends BaseModel> extends MetaClass {
     this.models.push(item);
   }
 
-  findIndex(item: T) {
+  public findIndex(item: T) {
     return this.models.findIndex(value => value._uid === item._uid);
   }
 
-  remove(item: T) {
+  public remove(item: T) {
     const index = this.findIndex(item);
     if (index >= 0) {
       this.models.splice(index, 1);
     }
   }
 
-  override(item: T) {
+  public override(item: T) {
     const index = this.findIndex(item);
     if (index === -1) return;
     this.models.splice(index, 1, this.createModel(item) as T);
   }
 
-  get() {
+  public get() {
     return this.models;
   }
 }
