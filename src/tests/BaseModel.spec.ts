@@ -40,8 +40,13 @@ describe('BaseModel', () => {
     expect(model.boot).toBeTypeOf("function");
   });
 
-   test('isValid returns true if there are no errors', () => {
+  test('isValid returns true if there are no errors', () => {
     model.errors = {};
+    expect(model.isValid).toBe(true);
+  });
+
+  test('isValid returns true if there are no errors messages', () => {
+    model.errors = { someError: '' };
     expect(model.isValid).toBe(true);
   });
 

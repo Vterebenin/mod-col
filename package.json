@@ -11,9 +11,11 @@
   "scripts": {
     "test": "vitest",
     "build": "tsc",
+    "coverage": "vitest run --coverage",
     "publish-lib": "npm run build && npm publish"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^1.2.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vitest": "^1.2.2"
