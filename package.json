@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.2.2",
+    "typedoc": "^0.25.7",
+    "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vitest": "^1.2.2"
