@@ -12,7 +12,7 @@ describe('BaseModel', () => {
     expect(typeof model._uid).toBe('string');
     expect(model._listeners).toEqual({});
     expect(model.errors).toEqual({});
-    expect(model.initialFields).toEqual(["errors", "boot", "initialFields"]);
+    expect(model.initialFields).toEqual(["errors", "initialFields"]);
     expect(model.boot).toBeNull();
     expect(model.validation(null)).toStrictEqual({});
   });

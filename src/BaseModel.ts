@@ -9,7 +9,6 @@ export const EVENTS_TYPES = {
 
 export default class BaseModel extends MetaClass {
   public errors: AbstractObject<String> = {};
-  public boot: Function | undefined | null = null;
 
   initialFields: string[] = [];
 
@@ -20,14 +19,24 @@ export default class BaseModel extends MetaClass {
     return this.initialize(data);
   }
 
-  initialize(data: any): BaseModel {
+  boot(): void {
+  }
+
+  initialize(data: any) {
     this.initialFields = Object.keys(this).filter(k => !RESERVED_FIELDS.includes(k));
     this.clear(data);
     this._uid = uniqueId();
     if (this.boot) {
       this.boot();
     }
-    return new Proxy<BaseModel>(this, {
+    console.log(new Proxy(this, {
+      set: (target, p: string, value: any) => {
+        this.clearError(p);
+        target[p] = value;
+        return true;
+      },
+    }), '????');
+    return new Proxy(this, {
       set: (target, p: string, value: any) => {
         this.clearError(p);
         target[p] = value;
