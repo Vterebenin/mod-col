@@ -1,6 +1,6 @@
 {
   "name": "mod-col",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "Model&Collection library for frontend. Break entities on your frontend into reusable parts!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,6 +12,7 @@
     "test": "vitest",
     "build": "tsc",
     "coverage": "vitest run --coverage",
+    "docs": "typedoc --out ./docs ./src",
     "publish-lib": "npm run build && npm publish"
   },
   "devDependencies": {

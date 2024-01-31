@@ -42,4 +42,11 @@ Install with your favourite package manager like so:
 npm i --save mod-col
 ```
 
+## Usage
+
 Then use it like so: 
+
+- [Model Consumer Example](https://github.com/Vterebenin/mod-col/blob/main/src/tests/consumers/BaseModel.spec.ts)
+- [Collection Consumer Example](https://github.com/Vterebenin/mod-col/blob/main/src/tests/consumers/BaseCollection.spec.ts)
+
+

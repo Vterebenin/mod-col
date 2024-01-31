@@ -19,7 +19,6 @@ describe('BaseModel', () => {
   test('clear method clears properties', () => {
     model.loading = true;
     model.errors = { someError: 'Something went wrong' };
-    model.boot = () => vi.fn();
 
     model.clear();
 
@@ -209,7 +208,6 @@ describe('BaseModel', () => {
 
   test('initialize does not call boot if boot is not defined', () => {
     const mockBoot = vi.fn();
-    model.boot = undefined;
 
     model.initialize(null);
 
