@@ -1,11 +1,12 @@
 # mod-col
 
-Model&amp;Collection library for frontend. Break entities on your frontend into reusable encapsulated parts!
+[Model&amp;Collection](https://github.com/Vterebenin/mod-col) library for frontend. Break entities on your frontend into reusable encapsulated parts!
 
-## Notes before reading docs:
+## Notes for readers:
+
 - This library is, in fact, WIP. Probably a lot will change in the future;
 - Currently this library is used by very few project and will highly depend on their needs;
-- Contributions are very welcommed!
+- Contributions are very welcomed!
 - we were pretty much inspired with [vuemc](https://vuemc.io/)
 
 ## The problem 
@@ -26,6 +27,12 @@ The features:
 Keep in mind, that the concept is very straigthforward: There is some *Model* and a *Collection* of those *Models*. And they communicate with each other. 
 
 For instance `Book` is a model and a `Bookshelf` is a collection. Another great example is that `TodoList` is a collection and `Task` from `TodoList` is a model.
+
+## Motivation from creators
+
+You can not only use this as a library, but also as a source of inspiration of creating your own models that correlate with your codebase more. Just pass trough the examples and if its not working for your mental models, try to create your own for fun!
+
+Other than that, this is a great tool to create models and collections. Extend your classes from `BaseModel` and `BaseCollection`, then fill in required fields and add your methods. Some method not working for one of your classes? Override them!
 
 ## Installation
 

@@ -29,13 +29,6 @@ export default class BaseModel extends MetaClass {
     if (this.boot) {
       this.boot();
     }
-    console.log(new Proxy(this, {
-      set: (target, p: string, value: any) => {
-        this.clearError(p);
-        target[p] = value;
-        return true;
-      },
-    }), '????');
     return new Proxy(this, {
       set: (target, p: string, value: any) => {
         this.clearError(p);

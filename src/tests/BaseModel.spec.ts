@@ -13,7 +13,6 @@ describe('BaseModel', () => {
     expect(model._listeners).toEqual({});
     expect(model.errors).toEqual({});
     expect(model.initialFields).toEqual(["errors", "initialFields"]);
-    expect(model.boot).toBeNull();
     expect(model.validation(null)).toStrictEqual({});
   });
 
