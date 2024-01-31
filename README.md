@@ -1,15 +1,38 @@
 # mod-col
 
-Model&amp;Collection library for frontend. Break entities on your frontend into reusable parts!
-The relationship between data, component states, and the actions that affect them is a fundamental and unavoidable layer to manage when building a component or application. Vue does not provide a way to structure and encapsulate data, so most projects use plain objects and implement their own patterns to communicate with the server. This is perfectly fine for small applications, but can quickly become a lot to manage when the size of your project and team increases.
+Model&amp;Collection library for frontend. Break entities on your frontend into reusable encapsulated parts!
 
-This library takes care of this for you, providing a single point of entry and a consistent API:
+## Notes before reading docs:
+- This library is, in fact, WIP. Probably a lot will change in the future;
+- Currently this library is used by very few project and will highly depend on their needs;
+- Contributions are very welcommed!
+- we were pretty much inspired with [vuemc](https://vuemc.io/)
 
-Communicating with the server to fetch, save, and delete.
-Managing model states like empty, active and saved.
-Managing component states like loading, saving, and deleting.
-When we started to use Vue more extensively at Figured, we noticed that every team had a slightly different way of doing this, so we decided to develop a standard solution that is flexible enough to accommodate most use cases in a consistent way, while preserving reactivity and testability.
+## The problem 
 
-The basic concept is that of a Model and a Collection of models. Data and component state is managed automatically, and CRUD is built-in. A classic example would be a to-do list, where each task would be a model and the list of tasks would be a collection.
+If you ever worked on an application that has many entities (a.k.a. models), or with just large codebase, you probably end up with creating your implementations of Models and Collection. These concepts have many things in common. For instance, validations, request on backend and operations with arrays and entities, etc. On frontend, especially, frameworks like vue, react, etc does not provide a solution to scale, structure and encapsulate your models and collection. Implementation grows as the project grow and your ways to make it probably will lead to tech debt. 
 
+## The solution
 
+Modcol will give you a nice start to create your own models and encapsulate logic.
+
+The features:
+- Communicating with the server by defining apiFunctions().
+- Managing model validations: create your own set of rules and run them with .validate().
+- Managing component states like loading.
+- Easily add/override/remove/clone/etc your models from a collection.
+- todo: add more features
+
+Keep in mind, that the concept is very straigthforward: There is some *Model* and a *Collection* of those *Models*. And they communicate with each other. 
+
+For instance `Book` is a model and a `Bookshelf` is a collection. Another great example is that `TodoList` is a collection and `Task` from `TodoList` is a model.
+
+## Installation
+
+Install with your favourite package manager like so:
+
+```
+npm i --save mod-col
+```
+
+Then use it like so: 
