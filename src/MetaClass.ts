@@ -1,60 +1,110 @@
 import { uniqueId } from 'lodash';
 import { Listeners, Endpoints } from './types';
 
+/**
+ * Represents a base class with common functionality.
+ */
 export default class MetaClass {
+  /** Indicates whether the class is currently loading. */
   public loading: boolean = false;
+  
+  /** Unique identifier for the instance. */
   public _uid: string = uniqueId();
+  
+  /** Event listeners registered for this instance. */
   public _listeners: Listeners = {};
 
+  /** Constructs a new MetaClass instance. */
   constructor() {
     this.createMeta();
   }
 
-  public createMeta() {
+  /** Initializes or resets metadata for the instance. */
+  public createMeta(): void {
     this.loading = false;
     this._uid = uniqueId();
     this._listeners = {};
   }
 
-  /**
-   * @returns {string} The class name of this instance.
-   */
+  /** Gets the class name of this instance. */
   public get $class(): string {
     return (Object.getPrototypeOf(this)).constructor.name;
   }
 
+  /** Returns a string representation of this instance. */
   public toString(): string {
     return `<${this.$class} #${this._uid}>`;
   }
 
+  /**
+   * Initiates a fetch operation using provided payload.
+   * @param payload The payload for the fetch operation.
+   * @returns A Promise representing the fetch operation.
+   */
   public fetch(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.fetch);
   }
 
+  /**
+   * Initiates a create operation using provided payload.
+   * @param payload The payload for the create operation.
+   * @returns A Promise representing the create operation.
+   */
   public create(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.create);
   }
 
+  /**
+   * Initiates a read operation using provided payload.
+   * @param payload The payload for the read operation.
+   * @returns A Promise representing the read operation.
+   */
   public read(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.read);
   }
 
+  /**
+   * Initiates an update operation using provided payload.
+   * @param payload The payload for the update operation.
+   * @returns A Promise representing the update operation.
+   */
   public update(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.update);
   }
 
+  /**
+   * Initiates a delete operation using provided payload.
+   * @param payload The payload for the delete operation.
+   * @returns A Promise representing the delete operation.
+   */
   public delete(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.delete);
   }
 
+  /**
+   * Initiates a bulk delete operation using provided payload.
+   * @param payload The payload for the bulk delete operation.
+   * @returns A Promise representing the bulk delete operation.
+   */
   public bulkDelete(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.bulkDelete);
   }
 
+  /**
+   * Initiates a bulk create or update operation using provided payload.
+   * @param payload The payload for the bulk create or update operation.
+   * @returns A Promise representing the bulk create or update operation.
+   */
   public bulkCreateOrUpdate(payload: any = null): Promise<any> {
     return this.makeRequest(payload, this.apiFunctions()?.bulkCreateOrUpdate);
   }
 
+  /**
+   * Makes a request using the provided request function and payload.
+   * @param payload The payload for the request.
+   * @param reqFunc The request function to execute.
+   * @returns A Promise representing the request operation.
+   */
   public async makeRequest(payload: any, reqFunc: any): Promise<any> {
     if (reqFunc) {
       return this.doWithLoading(reqFunc, payload);
@@ -62,14 +112,23 @@ export default class MetaClass {
     return null;
   }
 
-  public async doWithLoading(func: Function, ...args: any[]) {
+  /**
+   * Performs an asynchronous operation with loading indicator.
+   * @param func The function to execute.
+   * @param args Additional arguments for the function.
+   * @returns A Promise representing the result of the operation.
+   */
+  public async doWithLoading(func: Function, ...args: any[]): Promise<any> {
     this.loading = true;
     const result = await func(...args);
     this.loading = false;
     return result;
   }
 
-  // mapper of validation functions and messages
+  /** 
+   * Returns a map of API functions with default values.
+   * @returns An object containing API functions.
+   */
   public apiFunctions(): Endpoints {
     return {
       fetch: null,
